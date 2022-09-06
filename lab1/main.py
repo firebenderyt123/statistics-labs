@@ -1,5 +1,5 @@
-from math import *
 import numpy as np
+from math import *
 from Function import Function
 
 class MFunc(Function):
@@ -39,7 +39,7 @@ func.renderPlot(2, 2, 2, color = '--r') # 2 cols, 2 rows, pos 2 (top right)
 y1 = func.getY()
 
 furier = Furier(100, -pi, pi)
-furier.calc(5000)
+furier.calc(5)
 furier.renderPlot(2, 2, 3, color = '-b') # 2 cols, 2 rows, pos 3 (bottom left)
 furier.renderPlot(2, 2, 2, color = '-b') # 2 cols, 2 rows, pos 2 (top right)
 y2 = furier.getY()
@@ -52,7 +52,7 @@ print(sumEps / len(y1)) # average eps
 
 
 furier.setParams(100, -4*pi, 4*pi)
-furier.calc(5000)
+furier.calc(10)
 furier.renderPlot(2, 2, 4, color = '-b') # 2 cols, 2 rows, pos 4 (bottom right)
 
 func.showPlot()

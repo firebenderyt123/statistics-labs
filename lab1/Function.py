@@ -22,10 +22,7 @@ class Function:
 		self.x0 = x0
 		self.dx = (xn - x0) / N
 		self.nullCoords()
-
-	def getX(self):
-		return self.x
-
+		
 	def getY(self):
 		return self.y
 
