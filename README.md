@@ -6,3 +6,5 @@
 # Information
 Lab1 Help Links:
 	https://wikicsu.ru/wiki/Fourier_series
+Lab2 Help Links:
+	https://tvims.nsu.ru/chernova/tv/lec/node15.html
