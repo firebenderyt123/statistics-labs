@@ -113,6 +113,7 @@ class Diagnoser:
 			for i, nausea in enumerate(self._nausea):
 				if (line[1] == nausea):
 					self._hepatitis[1,i] += 1
+					break
 
 			for i, yellowishness in enumerate(self._yellowishness):
 				if (line[2] == yellowishness):
@@ -196,7 +197,6 @@ class Diagnoser:
 
 		for i, m_yellowishness in enumerate(self._yellowishness):
 			if (yellowishness == m_yellowishness):
-				self._stones[2,i] += 1
 				PrK_D1 *= self._ascariasis[2,i]
 				PrK_D2 *= self._hepatitis[2,i]
 				PrK_D3 *= self._stones[2,i]
@@ -204,7 +204,6 @@ class Diagnoser:
 
 		for i, m_right_side_pain in enumerate(self._right_side_pain):
 			if (right_side_pain == m_right_side_pain):
-				self._stones[3,i] += 1
 				PrK_D1 *= self._ascariasis[3,i]
 				PrK_D2 *= self._hepatitis[3,i]
 				PrK_D3 *= self._stones[3,i]
@@ -212,7 +211,6 @@ class Diagnoser:
 
 		for i, m_liver_enlargement in enumerate(self._liver_enlargement):
 			if (liver_enlargement == m_liver_enlargement):
-				self._stones[4,i] += 1
 				PrK_D1 *= self._ascariasis[4,i]
 				PrK_D2 *= self._hepatitis[4,i]
 				PrK_D3 *= self._stones[4,i]
@@ -220,7 +218,6 @@ class Diagnoser:
 
 		for i, m_appetite in enumerate(self._appetite):
 			if (appetite == m_appetite):
-				self._stones[5,i] += 1
 				PrK_D1 *= self._ascariasis[5,i]
 				PrK_D2 *= self._hepatitis[5,i]
 				PrK_D3 *= self._stones[5,i]
@@ -268,7 +265,7 @@ if __name__ == '__main__':
 	diagnoser = Diagnoser()
 	statistics = diagnoser.getStatistics()
 	print(statistics)
-	diagnoses = diagnoser.getDiagnose(19, 'yes', 'skin', 'yes', 'yes', 'no')
+	diagnoses = diagnoser.getDiagnose(12, 'no', 'eye', 'no', 'no', 'yes')
 	diagnoser.drawPlot(diagnoses)
 
 
