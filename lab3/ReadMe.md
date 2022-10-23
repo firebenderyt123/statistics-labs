@@ -4,3 +4,8 @@
 2. Unzip necessary files from zip archives
 3. Change pathes to them in .py files
 4. Be surprised how it works.
+
+
+# Help
+
+https://metanit.com/python/tkinter/2.8.php

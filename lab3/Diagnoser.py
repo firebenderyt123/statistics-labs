@@ -3,6 +3,12 @@ import numpy as np
 
 class Diagnoser:
 
+	pathes = [
+		"db/Ascariasis_var2.csv", # Ascariasis
+		"db/Hepatitis_var2.csv", # Hepatitis
+		"db/Stones_var2.csv" # Stones
+	]
+
 	_diagnoses = ['Aскаридоз', 'Гепатит', 'Камни в почках']
 
 	# contains coefs that calc from statistics' data
@@ -32,24 +38,37 @@ class Diagnoser:
 
 
 	def __init__(self):
-		self.calcStatistics()
+		pass
+
+	def setPath(self, path_id, path):
+		self.pathes[path_id] = path
 
 	# load databases
-	def _loadAscariasis(self):
-		with open("db/Ascariasis_var2.csv", "r") as f:
+	def _loadAscariasis(self, path=None):
+		if not path:
+			path = self.pathes[0]
+		with open(path, "r") as f:
 			return f.readlines()
 
-	def _loadHepatitis(self):
-		with open("db/Hepatitis_var2.csv", "r") as f:
+	def _loadHepatitis(self, path=None):
+		if not path:
+			path = self.pathes[1]
+		with open(path, "r") as f:
 			return f.readlines()
 
-	def _loadStones(self):
-		with open("db/Stones_var2.csv", "r") as f:
+	def _loadStones(self, path=None):
+		if not path:
+			path = self.pathes[2]
+		with open(path, "r") as f:
 			return f.readlines()
 
 
 	#calc statistics data
 	def calcStatistics(self):
+		self._ascariasis = np.zeros((6,4))
+		self._hepatitis  = np.zeros((6,4))
+		self._stones     = np.zeros((6,4))
+
 		self._statisticsAscariasis()
 		self._statisticsHepatitis()
 		self._statisticsStones()
@@ -175,8 +194,9 @@ class Diagnoser:
 		self._stones /= len(lines)-1
 
 	# probabilities
-	def getDiagnose(self, age, nausea, yellowishness,
-	right_side_pain, liver_enlargement, appetite):
+	def getDiagnose(self, params):
+		age, nausea, yellowishness, right_side_pain, liver_enlargement, appetite = params
+
 		PrK_D1 = 1 # ascariasis
 		PrK_D2 = 1 # hepatitis
 		PrK_D3 = 1 # stones
@@ -233,17 +253,20 @@ class Diagnoser:
 			PrK_D2 * PrD2 / (PrK_D1 * PrD1 + PrK_D2 * PrD2 + PrK_D3 * PrD3),
 			PrK_D3 * PrD3 / (PrK_D1 * PrD1 + PrK_D2 * PrD2 + PrK_D3 * PrD3)
 		]
-		self.printDiagnose(diagnoses)
 		return diagnoses
 
 	def printDiagnose(self, results):
+		print(self.getTextDiagnose(results))
+
+	def getTextDiagnose(self, results):
 		max_res = np.argmax(results)
-		print('\n\n-------- Диагноз --------')
-		print(f'Диагноз: {self._diagnoses[max_res]} ({round(results[max_res] * 100, 2)}%)')
-		print('\n-------- Вероятности болезней --------')
+		text = '\n\n-------- Диагноз --------'
+		text += f'\nДиагноз: {self._diagnoses[max_res]} ({round(results[max_res] * 100, 2)}%)'
+		text += '\n\n-------- Вероятности болезней --------'
 		for result in results:
-			print(f'Диагноз: {result} ({round(result * 100, 2)}%)')
-		print('\n')
+			text += f'\nДиагноз: {result} ({round(result * 100, 2)}%)'
+		text += '\n'
+		return text
 
 	def drawPlot(self, diagnoses):
 		x = []
@@ -263,9 +286,11 @@ class Diagnoser:
 
 if __name__ == '__main__':
 	diagnoser = Diagnoser()
+	diagnoser.calcStatistics()
 	statistics = diagnoser.getStatistics()
 	print(statistics)
-	diagnoses = diagnoser.getDiagnose(12, 'no', 'eye', 'no', 'no', 'yes')
+	diagnoses = diagnoser.getDiagnose([12, 'no', 'eye', 'no', 'no', 'yes'])
+	diagnoser.printDiagnose(diagnoses)
 	diagnoser.drawPlot(diagnoses)
 
 
