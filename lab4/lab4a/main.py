@@ -9,19 +9,26 @@ from scipy import stats
 healthy_dataset = "./data/Hospital_12_visitorsTemp.csv"
 flu_dataset = "./data/Hospital_12_FluTemp.csv"
 
-edge = 37
+edge = 37.28
 
 def integral(start, stop, num, loc, scale):
 	tN = np.linspace(start, stop, num)
 	yTN = stats.norm.pdf(tN, loc = loc, scale = scale)
 	return np.trapz(yTN, tN)
 
-def func(x0, mTN, sTN, mTF, sTF, C21_P2, C12_P1):
-    F1 = 1/sqrt(2*np.pi*sTN)*exp(-(x0-mTN)**2/2/sTN)
-    F2 = 1/sqrt(2*np.pi*sTF)*exp(-(x0-mTF)**2/2/sTF)
-    y = F1 / F2 - C21_P2/C12_P1
-    # y = x0*x0-4
-    return y
+def func(x0, h_loc, h_scale, s_loc, s_scale, C21_P2, C12_P1):
+	F1 = stats.norm.pdf(x0, loc = h_loc, scale = h_scale)
+	F2 = stats.norm.pdf(x0, loc = s_loc, scale = s_scale)
+	print(F1, F2)
+	y = F1 / F2 - C21_P2 / C12_P1
+	return y
+
+# def func(x0, mTN, sTN, mTF, sTF, C21_P2, C12_P1):
+#     F1 = 1/sqrt(2*np.pi*sTN)*exp(-(x0-mTN)**2/2/sTN)
+#     F2 = 1/sqrt(2*np.pi*sTF)*exp(-(x0-mTF)**2/2/sTF)
+#     y = F1 / F2 - C21_P2/C12_P1
+#     # y = x0*x0-4
+#     return y
 
 
 def normal_from_library(array, min, max, draw = True, label='normal'):
@@ -172,7 +179,7 @@ print(Pr11 + Pr12, Pr21 + Pr22, '\n')
 
 
 '''
- 	!!! NEED TO BE CHECKED !!!
+	Я не понимать :(
 '''
 
 C12 = 40  #  the cost of the mistake of 1st type 
@@ -181,13 +188,11 @@ C21 = 40 #  the cost of the mistake of 2nd type
 P2 = 0.1
 P1 = 0.21
 R = C12 * P1 * Pr12 + C21 * P2 * Pr21
-R2 = C12 * P2 * Pr12 + C21 * P1 * Pr21
-print('The risk is R2 ' + str(R2))
 print('The risk is  ' + str(R))
 print('The apriory risk for 1st mistake is ' + str(C12 * P1))
 print('The apriory risk for 2nd mistake is ' + str(C21 * P2), '\n')
 
-x00 = fsolve(func, 36.2, args=(Hn_dd, Hn_p, Sn_dd, Sn_p, C21 * P2, C12 * P1))
+x00 = fsolve(func, 37.2, args=(Hn_dd, Hn_p, Sn_dd, Sn_p, C21 * P2, C12 * P1))
 print(healthy_mean, sick_mean)
 print(x00)
 
