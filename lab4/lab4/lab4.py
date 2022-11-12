@@ -22,28 +22,28 @@ import matplotlib.pyplot as plt
 # 	return x, y, a, dd, p
 
 
-def normal_from_library(array, min, max, ax = plt, draw = True):
+def normal_from_library(array, min, max, ax = plt, draw = True, label='normal'):
 	dd, p = stats.norm.fit(array)
 	x = np.linspace(min, max, 100)
 	y = stats.norm.pdf(x, loc = dd, scale = p)
 	if draw:
-		sns.lineplot(x=x, y=y, ax=ax)
+		sns.lineplot(x=x, y=y, ax=ax, label=label)
 	return x, y, dd, p
 
-def gamma_from_library(array, min, max, ax = plt, draw = True):
+def gamma_from_library(array, min, max, ax = plt, draw = True, label='gamma'):
 	a, dd, p = stats.gamma.fit(array)
 	x = np.linspace(min, max, 100)
 	y = stats.gamma.pdf(x, a = a, loc = dd, scale = p)
 	if draw:
-		sns.lineplot(x=x, y=y, ax=ax)
+		sns.lineplot(x=x, y=y, ax=ax, label=label)
 	return x, y, a, dd, p
 
-def rayleigh_from_library(array, min, max, ax = plt, draw = True):
+def rayleigh_from_library(array, min, max, ax = plt, draw = True, label='rayleigh'):
 	dd, p = stats.rayleigh.fit(array)
 	x = np.linspace(min, max, 100)
 	y = stats.rayleigh.pdf(x, dd, p)
 	if draw:
-		sns.lineplot(x=x, y=y, ax=ax)
+		sns.lineplot(x=x, y=y, ax=ax, label=label)
 	return x, y, dd, p
 
 def calc(zno_df, subject):
@@ -59,20 +59,20 @@ def calc(zno_df, subject):
 	lp_arr = np.zeros(N) + zno_df[subject].quantile(.05)
 	rp_arr = np.zeros(N) + zno_df[subject].quantile(.95)
 
-	sns.lineplot(x=zno_df['age'], y=mean_arr, ax=ax1)
-	sns.lineplot(x=zno_df['age'], y=med_arr, ax=ax1)
+	sns.lineplot(x=zno_df['age'], y=mean_arr, ax=ax1, label='mean')
+	sns.lineplot(x=zno_df['age'], y=med_arr, ax=ax1, label='median')
 
-	sns.lineplot(x=zno_df['age'], y=lp_arr, ax=ax1)
-	sns.lineplot(x=zno_df['age'], y=rp_arr, ax=ax1)
+	sns.lineplot(x=zno_df['age'], y=lp_arr, ax=ax1, label='5%')
+	sns.lineplot(x=zno_df['age'], y=rp_arr, ax=ax1, label='95%')
 
-	sns.lineplot(x=zno_df['age'], y=mean_arr + std_arr, ax=ax1)
-	sns.lineplot(x=zno_df['age'], y=mean_arr - std_arr, ax=ax1)
+	sns.lineplot(x=zno_df['age'], y=mean_arr + std_arr, ax=ax1, label='mean + std')
+	sns.lineplot(x=zno_df['age'], y=mean_arr - std_arr, ax=ax1, label='mean - std')
 
 	k = round(N**0.5)
 	math_min = zno_df[subject].min()
 	math_max = zno_df[subject].max()
-	Mx = zno_df[subject].mean()
-	Sx = zno_df[subject].std()
+	Mx = mean_arr[0]
+	Sx = std_arr[0]
 	d = (math_max - math_min) / k
 
 	histogr, b = np.histogram(zno_df[subject], k, density = True)
