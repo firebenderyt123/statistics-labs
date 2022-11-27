@@ -9,7 +9,7 @@ from scipy import stats
 healthy_dataset = "./data/Hospital_12_visitorsTemp.csv"
 flu_dataset = "./data/Hospital_12_FluTemp.csv"
 
-edge = 37.28
+edge = 37
 
 def integral(start, stop, num, loc, scale):
 	tN = np.linspace(start, stop, num)
@@ -19,7 +19,6 @@ def integral(start, stop, num, loc, scale):
 def func(x0, h_loc, h_scale, s_loc, s_scale, C21_P2, C12_P1):
 	F1 = stats.norm.pdf(x0, loc = h_loc, scale = h_scale)
 	F2 = stats.norm.pdf(x0, loc = s_loc, scale = s_scale)
-	print(F1, F2)
 	y = F1 / F2 - C21_P2 / C12_P1
 	return y
 
@@ -175,12 +174,8 @@ print('Probablity of the mistake of 1st type "the healthy person with high tempe
 str(Pr12)) 
 print('Probablity of correct decision for ill person is  '+ str(Pr22)) 
 print('Probablity of the mistake of 2nd type "the ill person with low temperature" is  '+ str(Pr21))
-print(Pr11 + Pr12, Pr21 + Pr22, '\n')
+# print(Pr11 + Pr12, Pr21 + Pr22, '\n')
 
-
-'''
-	Я не понимать :(
-'''
 
 C12 = 40  #  the cost of the mistake of 1st type 
 C21 = 40 #  the cost of the mistake of 2nd type 
@@ -192,7 +187,7 @@ print('The risk is  ' + str(R))
 print('The apriory risk for 1st mistake is ' + str(C12 * P1))
 print('The apriory risk for 2nd mistake is ' + str(C21 * P2), '\n')
 
-x00 = fsolve(func, 37.2, args=(Hn_dd, Hn_p, Sn_dd, Sn_p, C21 * P2, C12 * P1))
+x00 = fsolve(func, edge, args=(Hn_dd, Hn_p, Sn_dd, Sn_p, C21 * P2, C12 * P1))
 print(healthy_mean, sick_mean)
 print(x00)
 

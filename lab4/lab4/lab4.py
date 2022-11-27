@@ -131,7 +131,7 @@ def calc(zno_df, subject):
 
 	obs_freq = histogr * d
 
-	print(exp_freqR)
+	# print(exp_freqR)
 
 	chiG, pG = stats.chisquare(obs_freq, exp_freqG)
 	print('\n\nChi squred test for Gamma distribution')
